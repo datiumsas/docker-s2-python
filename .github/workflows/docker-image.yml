@@ -19,11 +19,18 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag wfajraoui/docker-s2-python:${GITHUB_SHA::8}
+    - name: Save Docker Image for Stage Deploy
+      run: docker save wfajraoui/docker-s2-python:${GITHUB_SHA::8} > /tmp/docker-s2-python.tar
+    
    
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Load Docker image
+      run: |
+        docker load --input /tmp/docker-s2-python.tar
+        docker image ls -
     - name: Push Docker Image to Docker Hub
       run: docker push ${{secrets.DOCKER_USERNAME}}/docker-s2-python:${GITHUB_SHA::8}
    
