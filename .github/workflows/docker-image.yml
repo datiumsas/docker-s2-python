@@ -21,12 +21,21 @@ jobs:
       run: docker build . --file Dockerfile --tag wfajraoui/docker-s2-python:${GITHUB_SHA::8}
     - name: Save Docker Image for Stage Deploy
       run: docker save wfajraoui/docker-s2-python:${GITHUB_SHA::8} > /tmp/docker-s2-python.tar
+    - name: Show /tmp
+      run: ls -la /tmp
     
    
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: docker-s2-python
+        path: /tmp
+    - name: Show /tmp
+      run: ls -la /tmp
     - name: Load Docker image
       run: |
         docker load --input /tmp/docker-s2-python.tar
