@@ -21,9 +21,9 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag wfajraoui/docker-s2-python:${GITHUB_SHA}
+      run: docker build . --file Dockerfile --tag wfajraoui/docker-s2-python:${GITHUB_SHA::8}
    
       
     - name: Push Docker Image to Docker Hub
-      run: docker push ${{secrets.DOCKER_USERNAME}}/docker-s2-python:${GITHUB_SHA}
+      run: docker push ${{secrets.DOCKER_USERNAME}}/docker-s2-python:${GITHUB_SHA::8}
    
