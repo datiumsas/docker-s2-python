@@ -23,7 +23,9 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag wfajraoui/docker-s2-python:${GITHUB_SHA::8}
    
-      
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
     - name: Push Docker Image to Docker Hub
       run: docker push ${{secrets.DOCKER_USERNAME}}/docker-s2-python:${GITHUB_SHA::8}
    
